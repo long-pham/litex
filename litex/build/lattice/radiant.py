@@ -154,10 +154,13 @@ class LatticeRadiantToolchain(GenericToolchain):
 
         def tcl_path(path): return path.replace("\\", "/")
 
+        # temporary workaround
+        tcl.append('prj_set_impl_opt -impl "impl" "VerilogStandard" "System Verilog"')
+
         # Add include paths
         vincpath = ";".join(map(lambda x: tcl_path(x), self.platform.verilog_include_paths))
         if vincpath and vincpath.strip():
-            tcl.append("prj_set_impl_opt {include path} {\"" + vincpath + "\"}")
+            tcl.append(f"prj_set_impl_opt -impl \"impl\" \"include path\"  \"{vincpath}\"")
 
         # Add sources
         if self._synth_mode == "yosys":
